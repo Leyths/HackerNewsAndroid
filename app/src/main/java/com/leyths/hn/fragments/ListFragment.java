@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.leyths.hn.R;
+import com.leyths.hn.app.Logger;
 import com.leyths.hn.data.Downloader;
+import com.leyths.hn.models.Item;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,13 +24,13 @@ import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
 public class ListFragment extends Fragment {
-
+    private static final String TAG = ListFragment.class.getSimpleName();
     public static final String FRAGMENT_TAG = "listFragment";
 
     @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
 
     private ListAdapter listAdapter = new ListAdapter();
-    private List<Integer> topStories = new ArrayList<>();
+    private List<Item> items = new ArrayList<>();
 
     public static ListFragment newInstance() {
         ListFragment listFragment = new ListFragment();
@@ -63,10 +65,10 @@ public class ListFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    topStories = (List<Integer>) o;
+                    items = (List<Item>) o;
                     listAdapter.notifyDataSetChanged();
                 }, throwable -> {
-
+                    Logger.e(TAG, (Throwable)throwable);
                 });
     }
 
@@ -79,13 +81,15 @@ public class ListFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(ListViewHolder holder, int position) {
+            Item item = items.get(position);
+
             TextView tv = (TextView) holder.itemView;
-            tv.setText(String.valueOf(topStories.get(position)));
+            tv.setText(item.getTitle());
         }
 
         @Override
         public int getItemCount() {
-            return topStories.size();
+            return items.size();
         }
     }
 
