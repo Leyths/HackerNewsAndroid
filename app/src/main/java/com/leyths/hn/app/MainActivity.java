@@ -6,8 +6,10 @@ import android.os.Bundle;
 import android.view.ViewGroup;
 
 import com.leyths.hn.R;
+import com.leyths.hn.fragments.CommentsFragment;
 import com.leyths.hn.fragments.ContentFragment;
 import com.leyths.hn.fragments.ListFragment;
+import com.leyths.hn.models.Item;
 import com.squareup.otto.Subscribe;
 
 import butterknife.ButterKnife;
@@ -52,11 +54,28 @@ public class MainActivity extends AppCompatActivity {
         ft.commit();
     }
 
+    @Subscribe
+    @SuppressWarnings("unused")
+    public void goToComments(GoToCommentsEvent event) {
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.content, CommentsFragment.newInstance(event.item), CommentsFragment.FRAGMENT_TAG);
+        ft.addToBackStack(CommentsFragment.FRAGMENT_TAG);
+        ft.commit();
+    }
+
     public static class GoToContentEvent {
         public final String contentUrl;
 
         public GoToContentEvent(String contentUrl) {
             this.contentUrl = contentUrl;
+        }
+    }
+
+    public static class GoToCommentsEvent {
+        public final Item item;
+
+        public GoToCommentsEvent(Item item) {
+            this.item = item;
         }
     }
 }

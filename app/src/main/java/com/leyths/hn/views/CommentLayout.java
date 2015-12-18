@@ -15,47 +15,41 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class ItemLayout extends LinearLayout {
+public class CommentLayout extends LinearLayout {
 
-    @InjectView(R.id.title) protected TextView title;
+    @InjectView(R.id.text) protected TextView text;
     @InjectView(R.id.submitter) protected TextView submitter;
-    @InjectView(R.id.comments) protected TextView comments;
+    @InjectView(R.id.date) protected TextView date;
 
     private Item item;
 
-    public ItemLayout(Context context) {
+    public CommentLayout(Context context) {
         super(context);
         init();
     }
 
-    public ItemLayout(Context context, AttributeSet attrs) {
+    public CommentLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         init();
     }
 
-    public ItemLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    public CommentLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         init();
     }
 
     private void init() {
         setOrientation(VERTICAL);
-        LayoutInflater.from(getContext()).inflate(R.layout.view_list_item, this, true);
+        LayoutInflater.from(getContext()).inflate(R.layout.view_list_comment, this, true);
         ButterKnife.inject(this);
     }
 
     public void setItem(Item item) {
         this.item = item;
-        title.setText(item.getTitle());
+        date.setText(item.getDate().toString());
         submitter.setText(item.getBy());
-        comments.setText(item.getDescendants());
+        text.setText(item.getText());
 
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
-    }
-
-    @OnClick(R.id.comments)
-    @SuppressWarnings("unused")
-    void commentsClicked() {
-        EventBus.post(new MainActivity.GoToCommentsEvent(item));
     }
 }
