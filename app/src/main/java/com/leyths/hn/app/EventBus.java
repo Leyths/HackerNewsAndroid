@@ -29,10 +29,6 @@ public class EventBus {
         if (o == null)
             return false;
 
-
-        // Register will throw an IllegalArgumentException if the object being registered doesn't
-        // implement the appropriate listeners. This could be handled in a try / catch block, but it
-        // would swallow the exceptions, which could be useful to the development team.
         getBus().register(o);
 
         return true;
@@ -44,7 +40,7 @@ public class EventBus {
         try {
             getBus().unregister(o);
         } catch (IllegalArgumentException ex) {
-            Logger.e(TAG, "Error in event bus", ex);
+            Logger.e(TAG, ex);
             return false;
         }
 
