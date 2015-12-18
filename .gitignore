@@ -1,0 +1,25 @@
+#Amazon S3 credentials
+_keys.sh
+
+# IDEA Ignores
+*.iml
+*.ipr
+*.iws
+.idea/
+local.properties
+android-news-app/.idea/*
+
+#Gradle build folders
+build/
+.gradle/*
+java-tests/.gradle/*
+java-tests/java-tests/
+
+# Generic Android Ignores
+/*/bin
+*/gen
+bin
+gen/
+target
+*.apk
+android-common.jar
