@@ -33,4 +33,8 @@ public class Item {
     public String getBy() {
         return by;
     }
+
+    public String getUrl() {
+        return url;
+    }
 }

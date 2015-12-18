@@ -7,6 +7,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.leyths.hn.R;
+import com.leyths.hn.app.EventBus;
+import com.leyths.hn.app.MainActivity;
 import com.leyths.hn.models.Item;
 
 import butterknife.ButterKnife;
@@ -41,5 +43,7 @@ public class ItemLayout extends LinearLayout {
     public void setItem(Item item) {
         title.setText(item.getTitle());
         submitter.setText(item.getBy());
+
+        setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }
 }
