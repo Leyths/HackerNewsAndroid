@@ -14,6 +14,7 @@ import com.leyths.hn.R;
 import com.leyths.hn.app.Logger;
 import com.leyths.hn.data.Downloader;
 import com.leyths.hn.models.Item;
+import com.leyths.hn.views.ItemLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,15 +77,15 @@ public class ListFragment extends Fragment {
 
         @Override
         public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListViewHolder(new TextView(parent.getContext()));
+            return new ListViewHolder(new ItemLayout(parent.getContext()));
         }
 
         @Override
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Item item = items.get(position);
 
-            TextView tv = (TextView) holder.itemView;
-            tv.setText(item.getTitle());
+            ItemLayout tv = (ItemLayout) holder.itemView;
+            tv.setItem(item);
         }
 
         @Override

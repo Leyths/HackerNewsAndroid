@@ -29,4 +29,8 @@ public class Item {
     public String getTitle() {
         return title;
     }
+
+    public String getBy() {
+        return by;
+    }
 }
