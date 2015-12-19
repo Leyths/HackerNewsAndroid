@@ -2,6 +2,7 @@ package com.leyths.hn.views;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -60,5 +61,6 @@ public class CommentLayout extends LinearLayout {
         date.setText(DateHelper.dateToRelativeTime(item.getDate()));
         submitter.setText(item.getBy());
         text.setText(Html.fromHtml(item.getText()));
+        text.setMovementMethod(LinkMovementMethod.getInstance());
     }
 }
