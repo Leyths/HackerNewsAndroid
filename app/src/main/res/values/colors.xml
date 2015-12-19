@@ -12,4 +12,7 @@
     <color name="textColorMeta">#666666</color>
 
     <color name="divider_color">#888888</color>
+
+    <color name="comment_background">#FF6600</color>
+    <color name="comment_background_pressed">#FF6600</color>
 </resources>

@@ -63,10 +63,11 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:minWidth="60dp"
-            android:paddingLeft="@dimen/padding_left"
-            android:paddingRight="@dimen/padding_right"
-            android:paddingTop="@dimen/padding_top"
-            android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/text_size_medium" />
+            android:layout_marginLeft="@dimen/padding_left"
+            android:layout_marginRight="@dimen/padding_right"
+            android:layout_marginTop="@dimen/padding_top"
+            android:textColor="@color/comment_text_color"
+            android:textSize="@dimen/text_size_medium"
+            android:background="@drawable/comment_background"/>
     </RelativeLayout>
 </merge>
