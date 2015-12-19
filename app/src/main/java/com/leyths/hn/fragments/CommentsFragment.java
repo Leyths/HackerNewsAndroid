@@ -131,7 +131,10 @@ public class CommentsFragment extends Fragment {
 
     private void add(List<Item> flattened, Item currentItem, int depth) {
         currentItem.setDepth(depth);
-        flattened.add(currentItem);
+        
+        if(currentItem.hasChildren() || !currentItem.isDeleted()) {
+            flattened.add(currentItem);
+        }
         if (currentItem.hasChildren()) {
             for (Item child : currentItem.getChildren()) {
                 add(flattened, child, depth + 1);
