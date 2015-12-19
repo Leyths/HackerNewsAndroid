@@ -30,12 +30,15 @@ public class CommentsFragment extends Fragment {
     private static final String TAG = CommentsFragment.class.getSimpleName();
     public static final String FRAGMENT_TAG = "commentsFragment";
     private static final String ARG_ITEM = "arg_item";
+    private static final String STATE_ITEMS = "items";
 
-    @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
-    @InjectView(R.id.progress) protected ProgressBar progressBar;
+    @InjectView(R.id.recyclerview)
+    protected RecyclerView recyclerView;
+    @InjectView(R.id.progress)
+    protected ProgressBar progressBar;
 
     private ListAdapter listAdapter = new ListAdapter();
-    private List<Item> flattenedItems = new ArrayList<>();
+    private ArrayList<Item> flattenedItems = new ArrayList<>();
 
     private Item item;
 
@@ -71,7 +74,15 @@ public class CommentsFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(listAdapter);
-        fetchData();
+
+        if(!flattenedItems.isEmpty()) {
+            showContent();
+        } else if(savedInstanceState != null && savedInstanceState.containsKey(STATE_ITEMS)) {
+            flattenedItems = (ArrayList<Item>) savedInstanceState.getSerializable(STATE_ITEMS);
+            showContent();
+        } else {
+            fetchData();
+        }
     }
 
     private void fetchData() {
@@ -79,30 +90,42 @@ public class CommentsFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    Item newItem = (Item)o;
+                    Item newItem = (Item) o;
 
-                    List<Item> flattened = new ArrayList<>();
+                    ArrayList<Item> flattened = new ArrayList<>();
 
                     flattened.add(newItem);
-                    for(Item item : newItem.getChildren()) {
+                    for (Item item : newItem.getChildren()) {
                         add(flattened, item, 0);
                     }
                     flattenedItems = flattened;
 
-                    progressBar.setVisibility(View.GONE);
-                    recyclerView.setVisibility(View.VISIBLE);
+                    showContent();
+                }, throwable -> Logger.e(TAG, (Throwable) throwable));
+    }
 
-                    listAdapter.notifyDataSetChanged();
-                }, throwable -> Logger.e(TAG, (Throwable)throwable));
+    private void showContent() {
+        progressBar.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+
+        listAdapter.notifyDataSetChanged();
     }
 
     private void add(List<Item> flattened, Item currentItem, int depth) {
         currentItem.setDepth(depth);
         flattened.add(currentItem);
-        if(currentItem.hasChildren()) {
-            for(Item child : currentItem.getChildren()) {
+        if (currentItem.hasChildren()) {
+            for (Item child : currentItem.getChildren()) {
                 add(flattened, child, depth + 1);
             }
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(!flattenedItems.isEmpty()) {
+            outState.putSerializable(STATE_ITEMS, flattenedItems);
         }
     }
 
@@ -125,13 +148,13 @@ public class CommentsFragment extends Fragment {
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Item item = flattenedItems.get(position);
 
-            if(holder.getItemViewType() == VIEW_TYPE_COMMENT) {
+            if (holder.getItemViewType() == VIEW_TYPE_COMMENT) {
                 CommentLayout commentLayout = (CommentLayout) holder.itemView;
                 commentLayout.setItem(item);
 
                 int backgroundResource = position % 2 == 0 ? R.color.listColorOne : R.color.listColorTwo;
                 commentLayout.setBackgroundColor(getResources().getColor(backgroundResource));
-            } else if(holder.getItemViewType() == VIEW_TYPE_HEADER) {
+            } else if (holder.getItemViewType() == VIEW_TYPE_HEADER) {
                 CommentHeaderLayout commentLayout = (CommentHeaderLayout) holder.itemView;
                 commentLayout.setItem(item);
             }
@@ -141,7 +164,7 @@ public class CommentsFragment extends Fragment {
         public int getItemViewType(int position) {
             Item item = flattenedItems.get(position);
 
-            if(Item.TYPE_STORY.equals(item.getType())) {
+            if (Item.TYPE_STORY.equals(item.getType())) {
                 return VIEW_TYPE_HEADER;
             } else {
                 return VIEW_TYPE_COMMENT;

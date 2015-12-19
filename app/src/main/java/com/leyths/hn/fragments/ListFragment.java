@@ -154,7 +154,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(items != null) {
+        if(!items.isEmpty()) {
             outState.putSerializable(STATE_ITEMS, items);
         }
     }
