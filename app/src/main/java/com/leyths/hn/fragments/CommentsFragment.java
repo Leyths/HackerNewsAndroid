@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import com.leyths.hn.R;
 import com.leyths.hn.app.Logger;
@@ -29,6 +30,7 @@ public class CommentsFragment extends Fragment {
     private static final String ARG_ITEM = "arg_item";
 
     @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
+    @InjectView(R.id.progress) protected ProgressBar progressBar;
 
     private ListAdapter listAdapter = new ListAdapter();
     private List<Item> flattenedItems = new ArrayList<>();
@@ -82,10 +84,12 @@ public class CommentsFragment extends Fragment {
                         add(flattened, item, 0);
                     }
                     flattenedItems = flattened;
+
+                    progressBar.setVisibility(View.GONE);
+                    recyclerView.setVisibility(View.VISIBLE);
+
                     listAdapter.notifyDataSetChanged();
-                }, throwable -> {
-                    Logger.e(TAG, (Throwable)throwable);
-                });
+                }, throwable -> Logger.e(TAG, (Throwable)throwable));
     }
 
     private void add(List<Item> flattened, Item currentItem, int depth) {
