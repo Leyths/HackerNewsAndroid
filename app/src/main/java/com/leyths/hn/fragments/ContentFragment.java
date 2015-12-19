@@ -10,6 +10,7 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 import com.leyths.hn.R;
 
@@ -21,6 +22,7 @@ public class ContentFragment extends Fragment {
     public static final String FRAGMENT_TAG = "contentFragment";
 
     @InjectView(R.id.webview) protected WebView webView;
+    @InjectView(R.id.progress) protected ProgressBar progressBar;
 
     private String url;
 
@@ -58,7 +60,18 @@ public class ContentFragment extends Fragment {
         webView.getSettings().setJavaScriptEnabled(true);
         webView.getSettings().setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NORMAL);
         webView.setWebViewClient(new WebViewClient());
-        webView.setWebChromeClient(new WebChromeClient());
+        webView.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public void onProgressChanged(WebView view, int newProgress) {
+                super.onProgressChanged(view, newProgress);
+
+                if(newProgress != 100) {
+                    progressBar.setProgress(newProgress);
+                } else {
+                    progressBar.setVisibility(View.GONE);
+                }
+            }
+        });
         webView.loadUrl(url);
     }
 
