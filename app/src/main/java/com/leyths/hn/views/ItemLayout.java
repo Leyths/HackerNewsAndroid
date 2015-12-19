@@ -1,6 +1,12 @@
 package com.leyths.hn.views;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
+import android.text.style.LeadingMarginSpan;
+import android.text.style.RelativeSizeSpan;
+import android.text.style.StyleSpan;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -57,7 +63,13 @@ public class ItemLayout extends LinearLayout {
         }
         domain.setText(domainStr);
         comments.setText(String.valueOf(item.getDescendants()));
-        points.setText(item.getScore());
+
+        SpannableStringBuilder score = new SpannableStringBuilder(
+                getResources().getString(R.string.score, item.getScore())
+        );
+        score.setSpan(new RelativeSizeSpan(1.25f), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        score.setSpan(new StyleSpan(Typeface.BOLD), 0, 1, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
+        points.setText(score);
 
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }

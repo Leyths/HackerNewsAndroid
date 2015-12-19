@@ -10,5 +10,6 @@
 
     <string name="deleted">[deleted]</string>
     <string name="domain">(%s)</string>
+    <string name="score">\u2191 %s</string>
     <string name="error">Something has gone wrong, tap to try again.</string>
 </resources>

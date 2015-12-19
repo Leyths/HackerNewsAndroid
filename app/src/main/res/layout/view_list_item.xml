@@ -40,6 +40,7 @@
             android:id="@+id/domain"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/points"
             android:layout_below="@+id/title"
             android:layout_toEndOf="@+id/points"
             android:layout_toLeftOf="@+id/comments"
