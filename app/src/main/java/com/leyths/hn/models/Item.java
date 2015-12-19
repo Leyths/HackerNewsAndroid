@@ -1,10 +1,14 @@
 package com.leyths.hn.models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class Item implements Serializable {
+    public static final String TYPE_COMMENT = "comment";
+    public static final String TYPE_STORY = "story";
+
     private long id;
     private boolean deleted;
     private String type;
@@ -13,7 +17,7 @@ public class Item implements Serializable {
     private String text;
     private boolean dead;
     private Integer parent;
-    private List<Integer> kids;
+    private ArrayList<Integer> kids;
     private String url;
     private Integer score;
     private String title;
@@ -85,5 +89,9 @@ public class Item implements Serializable {
 
     public boolean isDeleted() {
         return deleted;
+    }
+
+    public String getType() {
+        return type;
     }
 }

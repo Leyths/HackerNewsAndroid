@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_right"
+            android:paddingTop="@dimen/padding_top"
+            android:textColor="@color/textColorPrimary"
+            android:textSize="@dimen/text_size_large" />
+
+        <TextView
+            android:id="@+id/submitter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/title"
+            android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_right"
+            android:paddingTop="@dimen/padding_top"
+            android:textColor="@color/textColorMeta"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/submitter"
+            android:paddingBottom="@dimen/padding_bottom"
+            android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_right"
+            android:textColor="@color/textColorMeta"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+</merge>

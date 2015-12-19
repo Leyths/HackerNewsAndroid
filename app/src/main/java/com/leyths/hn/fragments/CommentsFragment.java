@@ -8,12 +8,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import com.leyths.hn.R;
 import com.leyths.hn.app.Logger;
 import com.leyths.hn.data.Downloader;
 import com.leyths.hn.models.Item;
+import com.leyths.hn.views.CommentHeaderLayout;
 import com.leyths.hn.views.CommentLayout;
 
 import java.util.ArrayList;
@@ -80,6 +82,8 @@ public class CommentsFragment extends Fragment {
                     Item newItem = (Item)o;
 
                     List<Item> flattened = new ArrayList<>();
+
+                    flattened.add(newItem);
                     for(Item item : newItem.getChildren()) {
                         add(flattened, item, 0);
                     }
@@ -103,21 +107,45 @@ public class CommentsFragment extends Fragment {
     }
 
     private class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
+        private static final int VIEW_TYPE_COMMENT = 0;
+        private static final int VIEW_TYPE_HEADER = 1;
 
         @Override
         public ListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-            return new ListViewHolder(new CommentLayout(parent.getContext()));
+            switch (viewType) {
+                case VIEW_TYPE_COMMENT:
+                    return new ListViewHolder(new CommentLayout(parent.getContext()));
+                case VIEW_TYPE_HEADER:
+                    return new ListViewHolder(new CommentHeaderLayout(parent.getContext()));
+            }
+            return new ListViewHolder(new LinearLayout(parent.getContext()));
         }
 
         @Override
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Item item = flattenedItems.get(position);
 
-            CommentLayout commentLayout = (CommentLayout) holder.itemView;
-            commentLayout.setItem(item);
+            if(holder.getItemViewType() == VIEW_TYPE_COMMENT) {
+                CommentLayout commentLayout = (CommentLayout) holder.itemView;
+                commentLayout.setItem(item);
 
-            int backgroundResource = position % 2 == 0 ? R.color.listColorOne : R.color.listColorTwo;
-            commentLayout.setBackgroundColor(getResources().getColor(backgroundResource));
+                int backgroundResource = position % 2 == 0 ? R.color.listColorOne : R.color.listColorTwo;
+                commentLayout.setBackgroundColor(getResources().getColor(backgroundResource));
+            } else if(holder.getItemViewType() == VIEW_TYPE_HEADER) {
+                CommentHeaderLayout commentLayout = (CommentHeaderLayout) holder.itemView;
+                commentLayout.setItem(item);
+            }
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            Item item = flattenedItems.get(position);
+
+            if(Item.TYPE_STORY.equals(item.getType())) {
+                return VIEW_TYPE_HEADER;
+            } else {
+                return VIEW_TYPE_COMMENT;
+            }
         }
 
         @Override
