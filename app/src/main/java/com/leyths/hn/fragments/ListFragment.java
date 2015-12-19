@@ -3,6 +3,7 @@ package com.leyths.hn.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -21,19 +22,23 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ListFragment extends Fragment {
+public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private static final String TAG = ListFragment.class.getSimpleName();
     public static final String FRAGMENT_TAG = "listFragment";
     private static final String STATE_ITEMS = "items";
 
     @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
     @InjectView(R.id.progress) protected ProgressBar progressBar;
+    @InjectView(R.id.swipe_refresh) protected SwipeRefreshLayout swipeRefreshLayout;
 
     private ListAdapter listAdapter = new ListAdapter();
     private ArrayList<Item> items = new ArrayList<>();
+
+    private Subscription subscription;
 
     public static ListFragment newInstance() {
         ListFragment listFragment = new ListFragment();
@@ -58,6 +63,8 @@ public class ListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.inject(this, view);
 
+        swipeRefreshLayout.setOnRefreshListener(this);
+
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(listAdapter);
 
@@ -79,15 +86,37 @@ public class ListFragment extends Fragment {
                     items = new ArrayList<>((List<Item>) o);
                     showContent();
                 }, throwable -> {
+                    swipeRefreshLayout.setRefreshing(false);
                     Logger.e(TAG, (Throwable)throwable);
                 });
     }
 
     private void showContent() {
+        swipeRefreshLayout.setRefreshing(false);
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
 
         listAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unsubscribe();
+    }
+
+    @Override
+    public void onRefresh() {
+        swipeRefreshLayout.setRefreshing(true);
+        unsubscribe();
+        fetchData();
+    }
+
+    private void unsubscribe() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
     }
 
     private class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
