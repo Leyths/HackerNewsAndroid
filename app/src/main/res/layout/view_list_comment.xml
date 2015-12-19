@@ -11,6 +11,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
+            android:fontFamily="sans-serif-light"
             android:paddingLeft="@dimen/padding_left"
             android:paddingTop="@dimen/padding_top"
             android:textColor="@color/textColorMeta"
@@ -22,6 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_toEndOf="@+id/submitter"
             android:layout_toRightOf="@+id/submitter"
+            android:fontFamily="sans-serif-light"
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="@dimen/padding_top"
@@ -37,6 +39,7 @@
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="2dp"
+            android:fontFamily="sans-serif-light"
             android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/text_size_small" />
     </RelativeLayout>

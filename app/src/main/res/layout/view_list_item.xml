@@ -13,11 +13,13 @@
             android:layout_height="wrap_content"
             android:layout_toLeftOf="@+id/comments"
             android:layout_toStartOf="@+id/comments"
+            android:fontFamily="sans-serif-light"
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="@dimen/padding_top"
             android:textColor="@color/textColorPrimary"
-            android:textSize="@dimen/text_size_medium" />
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/points"
@@ -26,6 +28,7 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/title"
+            android:fontFamily="sans-serif-light"
             android:minWidth="40dp"
             android:paddingBottom="@dimen/padding_bottom"
             android:paddingLeft="@dimen/padding_left"
@@ -42,6 +45,7 @@
             android:layout_toLeftOf="@+id/comments"
             android:layout_toRightOf="@+id/points"
             android:layout_toStartOf="@+id/comments"
+            android:fontFamily="sans-serif-light"
             android:paddingBottom="@dimen/padding_bottom"
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
@@ -55,6 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:minWidth="60dp"
             android:paddingLeft="@dimen/padding_left"
