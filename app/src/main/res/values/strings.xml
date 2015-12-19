@@ -7,4 +7,6 @@
     <string name="days_ago">%sd ago</string>
     <string name="weeks_ago">%sw ago</string>
     <string name="years_ago">%sy ago</string>
+
+    <string name="deleted">[deleted]</string>
 </resources>

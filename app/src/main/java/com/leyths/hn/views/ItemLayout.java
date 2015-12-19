@@ -48,7 +48,7 @@ public class ItemLayout extends LinearLayout {
         this.item = item;
         title.setText(item.getTitle());
         submitter.setText(item.getBy());
-        comments.setText(item.getDescendants());
+        comments.setText(String.valueOf(item.getDescendants()));
 
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }

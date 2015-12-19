@@ -48,10 +48,17 @@ public class CommentLayout extends LinearLayout {
 
     public void setItem(Item item) {
         this.item = item;
+
+        setPadding(item.getDepth() * getResources().getDimensionPixelSize(R.dimen.padding_left), 0, 0, 0);
+
+        if (item.isDeleted()) {
+            date.setText(null);
+            submitter.setText(null);
+            text.setText(getResources().getString(R.string.deleted));
+            return;
+        }
         date.setText(DateHelper.dateToRelativeTime(item.getDate()));
         submitter.setText(item.getBy());
         text.setText(Html.fromHtml(item.getText()));
-
-        setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }
 }

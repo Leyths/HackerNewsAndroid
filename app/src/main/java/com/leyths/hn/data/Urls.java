@@ -10,7 +10,7 @@ public class Urls {
         return TOP_STORIES;
     }
 
-    public static String item(int id) {
+    public static String item(long id) {
         return String.format(ITEMS, id);
     }
 }

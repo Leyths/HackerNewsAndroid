@@ -18,6 +18,8 @@ public class Item implements Serializable {
     private Integer score;
     private String title;
     private int descendants;
+    private List<Item> children;
+    private int depth;
 
     public Item() {
 
@@ -39,8 +41,12 @@ public class Item implements Serializable {
         return url;
     }
 
-    public String getDescendants() {
-        return String.valueOf(descendants);
+    public int getDescendants() {
+        return descendants;
+    }
+
+    public boolean hasKids() {
+        return kids != null && !kids.isEmpty();
     }
 
     public List<Integer> getKids() {
@@ -55,5 +61,29 @@ public class Item implements Serializable {
         Date date = new Date();
         date.setTime(time * 1000L);
         return date;
+    }
+
+    public boolean hasChildren() {
+        return children != null && !children.isEmpty();
+    }
+
+    public List<Item> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<Item> children) {
+        this.children = children;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
     }
 }

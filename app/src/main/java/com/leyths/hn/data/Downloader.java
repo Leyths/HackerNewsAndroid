@@ -65,16 +65,12 @@ public class Downloader {
 
 
     public static Observable comments(Item item) {
-        return Observable.create(new Observable.OnSubscribe<List<Item>>() {
-            @Override
-            public void call(Subscriber<? super List<Item>> subscriber) {
-                try {
-                    List<Integer> ids = item.getKids();
-                    ListDownloadState listDownloadState = new ListDownloadState(subscriber, ids);
-                    listDownloadState.get();
-                } catch (Exception e) {
-                    subscriber.onError(e);
-                }
+        return Observable.create((Subscriber<? super Item> subscriber) -> {
+            try {
+                CommentsDownloadState commentsDownloadState = new CommentsDownloadState(subscriber, item);
+                commentsDownloadState.get();
+            } catch (Exception e) {
+                subscriber.onError(e);
             }
         });
     }
