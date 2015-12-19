@@ -8,7 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
 import com.leyths.hn.R;
 import com.leyths.hn.app.Logger;
@@ -27,11 +27,13 @@ import rx.schedulers.Schedulers;
 public class ListFragment extends Fragment {
     private static final String TAG = ListFragment.class.getSimpleName();
     public static final String FRAGMENT_TAG = "listFragment";
+    private static final String STATE_ITEMS = "items";
 
     @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
+    @InjectView(R.id.progress) protected ProgressBar progressBar;
 
     private ListAdapter listAdapter = new ListAdapter();
-    private List<Item> items = new ArrayList<>();
+    private ArrayList<Item> items = new ArrayList<>();
 
     public static ListFragment newInstance() {
         ListFragment listFragment = new ListFragment();
@@ -58,7 +60,15 @@ public class ListFragment extends Fragment {
 
         recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
         recyclerView.setAdapter(listAdapter);
-        fetchData();
+
+        if(!items.isEmpty()) {
+            showContent();
+        } else if(savedInstanceState != null && savedInstanceState.containsKey(STATE_ITEMS)) {
+            items = (ArrayList<Item>) savedInstanceState.getSerializable(STATE_ITEMS);
+            showContent();
+        } else {
+            fetchData();
+        }
     }
 
     private void fetchData() {
@@ -66,11 +76,18 @@ public class ListFragment extends Fragment {
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
-                    items = (List<Item>) o;
-                    listAdapter.notifyDataSetChanged();
+                    items = new ArrayList<>((List<Item>) o);
+                    showContent();
                 }, throwable -> {
                     Logger.e(TAG, (Throwable)throwable);
                 });
+    }
+
+    private void showContent() {
+        recyclerView.setVisibility(View.VISIBLE);
+        progressBar.setVisibility(View.GONE);
+
+        listAdapter.notifyDataSetChanged();
     }
 
     private class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {
@@ -105,4 +122,11 @@ public class ListFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if(items != null) {
+            outState.putSerializable(STATE_ITEMS, items);
+        }
+    }
 }
