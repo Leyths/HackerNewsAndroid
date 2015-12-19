@@ -95,8 +95,11 @@ public class CommentsFragment extends Fragment {
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Item item = items.get(position);
 
-            CommentLayout tv = (CommentLayout) holder.itemView;
-            tv.setItem(item);
+            CommentLayout commentLayout = (CommentLayout) holder.itemView;
+            commentLayout.setItem(item);
+
+            int backgroundResource = position % 2 == 0 ? R.color.listColorOne : R.color.listColorTwo;
+            commentLayout.setBackgroundColor(getResources().getColor(backgroundResource));
         }
 
         @Override

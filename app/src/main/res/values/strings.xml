@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">HN</string>
+
+    <string name="moments_ago">moments ago</string>
+    <string name="mins_ago">%sm ago</string>
+    <string name="hours_ago">%sh ago</string>
+    <string name="days_ago">%sd ago</string>
+    <string name="weeks_ago">%sw ago</string>
+    <string name="years_ago">%sy ago</string>
 </resources>

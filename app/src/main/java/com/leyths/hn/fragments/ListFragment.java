@@ -84,8 +84,12 @@ public class ListFragment extends Fragment {
         public void onBindViewHolder(ListViewHolder holder, int position) {
             Item item = items.get(position);
 
-            ItemLayout tv = (ItemLayout) holder.itemView;
-            tv.setItem(item);
+            ItemLayout itemLayout = (ItemLayout) holder.itemView;
+            itemLayout.setItem(item);
+
+            int backgroundResource = position % 2 == 0 ? R.color.listColorOne : R.color.listColorTwo;
+
+            itemLayout.setBackgroundColor(getResources().getColor(backgroundResource));
         }
 
         @Override

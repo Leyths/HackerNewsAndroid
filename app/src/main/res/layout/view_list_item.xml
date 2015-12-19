@@ -14,6 +14,7 @@
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="@dimen/padding_top"
+            android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/text_size_medium" />
 
         <TextView
@@ -27,6 +28,7 @@
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="2dp"
+            android:textColor="@color/textColorMeta"
             android:textSize="@dimen/text_size_small" />
 
         <TextView
@@ -35,9 +37,12 @@
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
+            android:gravity="center_horizontal"
+            android:minWidth="60dp"
             android:paddingLeft="@dimen/padding_left"
             android:paddingRight="@dimen/padding_right"
             android:paddingTop="@dimen/padding_top"
+            android:textColor="@color/textColorPrimary"
             android:textSize="@dimen/text_size_medium" />
     </RelativeLayout>
 </merge>

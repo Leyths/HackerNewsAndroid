@@ -1,6 +1,7 @@
 package com.leyths.hn.views;
 
 import android.content.Context;
+import android.text.Html;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.widget.LinearLayout;
@@ -10,6 +11,7 @@ import com.leyths.hn.R;
 import com.leyths.hn.app.EventBus;
 import com.leyths.hn.app.MainActivity;
 import com.leyths.hn.models.Item;
+import com.leyths.hn.ui.DateHelper;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -46,9 +48,9 @@ public class CommentLayout extends LinearLayout {
 
     public void setItem(Item item) {
         this.item = item;
-        date.setText(item.getDate().toString());
+        date.setText(DateHelper.dateToRelativeTime(item.getDate()));
         submitter.setText(item.getBy());
-        text.setText(item.getText());
+        text.setText(Html.fromHtml(item.getText()));
 
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }
