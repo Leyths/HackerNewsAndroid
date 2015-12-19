@@ -23,6 +23,8 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
@@ -32,13 +34,13 @@ public class CommentsFragment extends Fragment {
     private static final String ARG_ITEM = "arg_item";
     private static final String STATE_ITEMS = "items";
 
-    @InjectView(R.id.recyclerview)
-    protected RecyclerView recyclerView;
-    @InjectView(R.id.progress)
-    protected ProgressBar progressBar;
+    @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
+    @InjectView(R.id.progress) protected ProgressBar progressBar;
+    @InjectView(R.id.error) protected View error;
 
     private ListAdapter listAdapter = new ListAdapter();
     private ArrayList<Item> flattenedItems = new ArrayList<>();
+    private Subscription subscription;
 
     private Item item;
 
@@ -85,8 +87,10 @@ public class CommentsFragment extends Fragment {
         }
     }
 
-    private void fetchData() {
-        Downloader.comments(item)
+    @OnClick(R.id.error)
+    protected void fetchData() {
+        unsubscribe();
+        subscription = Downloader.comments(item)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(o -> {
@@ -101,12 +105,26 @@ public class CommentsFragment extends Fragment {
                     flattenedItems = flattened;
 
                     showContent();
-                }, throwable -> Logger.e(TAG, (Throwable) throwable));
+                }, throwable -> {
+                    recyclerView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    error.setVisibility(View.VISIBLE);
+
+                    Logger.e(TAG, (Throwable) throwable);
+                });
+    }
+
+    private void unsubscribe() {
+        if(subscription != null) {
+            subscription.unsubscribe();
+            subscription = null;
+        }
     }
 
     private void showContent() {
         progressBar.setVisibility(View.GONE);
         recyclerView.setVisibility(View.VISIBLE);
+        error.setVisibility(View.GONE);
 
         listAdapter.notifyDataSetChanged();
     }
@@ -127,6 +145,12 @@ public class CommentsFragment extends Fragment {
         if(!flattenedItems.isEmpty()) {
             outState.putSerializable(STATE_ITEMS, flattenedItems);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        unsubscribe();
     }
 
     private class ListAdapter extends RecyclerView.Adapter<ListViewHolder> {

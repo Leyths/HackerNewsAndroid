@@ -47,7 +47,7 @@ class CommentsDownloadState {
 
                         @Override
                         public void onResponse(Response response) throws IOException {
-                            if (!failed) {
+                            if (!failed && !subscriber.isUnsubscribed()) {
                                 try {
                                     Item childItem = Downloader.gson.fromJson(response.body().charStream(), Item.class);
                                     if (childItem == null) {

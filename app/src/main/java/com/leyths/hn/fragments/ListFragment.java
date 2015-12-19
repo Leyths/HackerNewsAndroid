@@ -22,6 +22,7 @@ import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -34,6 +35,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     @InjectView(R.id.recyclerview) protected RecyclerView recyclerView;
     @InjectView(R.id.progress) protected ProgressBar progressBar;
     @InjectView(R.id.swipe_refresh) protected SwipeRefreshLayout swipeRefreshLayout;
+    @InjectView(R.id.error) protected View error;
 
     private ListAdapter listAdapter = new ListAdapter();
     private ArrayList<Item> items = new ArrayList<>();
@@ -87,6 +89,10 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
                     showContent();
                 }, throwable -> {
                     swipeRefreshLayout.setRefreshing(false);
+                    recyclerView.setVisibility(View.GONE);
+                    progressBar.setVisibility(View.GONE);
+                    error.setVisibility(View.VISIBLE);
+
                     Logger.e(TAG, (Throwable)throwable);
                 });
     }
@@ -95,6 +101,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
         swipeRefreshLayout.setRefreshing(false);
         recyclerView.setVisibility(View.VISIBLE);
         progressBar.setVisibility(View.GONE);
+        error.setVisibility(View.GONE);
 
         listAdapter.notifyDataSetChanged();
     }
@@ -106,6 +113,7 @@ public class ListFragment extends Fragment implements SwipeRefreshLayout.OnRefre
     }
 
     @Override
+    @OnClick(R.id.error)
     public void onRefresh() {
         swipeRefreshLayout.setRefreshing(true);
         unsubscribe();

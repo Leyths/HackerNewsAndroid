@@ -46,7 +46,7 @@ class ListDownloadState {
 
                         @Override
                         public void onResponse(Response response) throws IOException {
-                            if (!failed) {
+                            if (!failed && !subscriber.isUnsubscribed()) {
                                 try {
                                     Item item = Downloader.gson.fromJson(response.body().charStream(), Item.class);
                                     if (item == null) {
