@@ -20,6 +20,7 @@ public class CommentHeaderLayout extends LinearLayout {
     @InjectView(R.id.title) protected TextView title;
     @InjectView(R.id.submitter) protected TextView submitter;
     @InjectView(R.id.date) protected TextView date;
+    @InjectView(R.id.domain) protected TextView domain;
 
     private Item item;
 
@@ -50,12 +51,21 @@ public class CommentHeaderLayout extends LinearLayout {
         if (item.isDeleted()) {
             date.setText(null);
             submitter.setText(null);
+            domain.setText(null);
             title.setText(getResources().getString(R.string.deleted));
             return;
         }
         date.setText(DateHelper.dateToRelativeTime(item.getDate()));
         submitter.setText(item.getBy());
         title.setText(item.getTitle());
+
+        String domainStr = item.getDomain();
+        if(domainStr != null) {
+            domainStr = domainStr.replaceAll("www.", "");
+            domainStr = getResources().getString(R.string.domain, domainStr);
+        }
+        domain.setText(domainStr);
+
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }
 }

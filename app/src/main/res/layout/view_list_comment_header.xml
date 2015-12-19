@@ -4,7 +4,8 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?android:attr/selectableItemBackground">
+        android:background="?android:attr/selectableItemBackground"
+        android:paddingBottom="@dimen/padding_bottom">
 
         <TextView
             android:id="@+id/title"
@@ -19,7 +20,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/submitter"
+            android:id="@+id/domain"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
@@ -31,13 +32,24 @@
             android:textSize="@dimen/text_size_small" />
 
         <TextView
-            android:id="@+id/date"
-            android:layout_width="match_parent"
+            android:id="@+id/submitter"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/submitter"
+            android:layout_below="@+id/domain"
             android:fontFamily="sans-serif-light"
-            android:paddingBottom="@dimen/padding_bottom"
             android:paddingLeft="@dimen/padding_left"
+            android:paddingRight="@dimen/padding_right"
+            android:textColor="@color/textColorMeta"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/domain"
+            android:layout_toRightOf="@+id/submitter"
+            android:layout_alignBaseline="@+id/submitter"
+            android:fontFamily="sans-serif-light"
             android:paddingRight="@dimen/padding_right"
             android:textColor="@color/textColorMeta"
             android:textSize="@dimen/text_size_small" />
