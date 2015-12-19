@@ -2,6 +2,8 @@ package com.leyths.hn.views;
 
 import android.content.Context;
 import android.text.Html;
+import android.text.SpannableStringBuilder;
+import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -60,7 +62,21 @@ public class CommentLayout extends LinearLayout {
         }
         date.setText(DateHelper.dateToRelativeTime(item.getDate()));
         submitter.setText(item.getBy());
-        text.setText(Html.fromHtml(item.getText()));
+        text.setText(getText(item));
         text.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    private Spanned getText(Item item) {
+        SpannableStringBuilder sb = new SpannableStringBuilder(Html.fromHtml(item.getText()));
+
+        while(sb.length() > 0 && Character.isWhitespace(sb.charAt(0))) {
+            sb.replace(0, 1, "");
+        }
+
+        while(sb.length() > 0 && Character.isWhitespace(sb.charAt(sb.length() - 1))) {
+            sb.replace(sb.length() - 1, sb.length(), "");
+        }
+
+        return sb;
     }
 }
