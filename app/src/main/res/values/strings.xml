@@ -9,4 +9,5 @@
     <string name="years_ago">%sy ago</string>
 
     <string name="deleted">[deleted]</string>
+    <string name="domain">(%s)</string>
 </resources>

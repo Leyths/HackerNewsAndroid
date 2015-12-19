@@ -1,6 +1,10 @@
 package com.leyths.hn.models;
 
+import android.net.Uri;
+
 import java.io.Serializable;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -39,6 +43,14 @@ public class Item implements Serializable {
 
     public String getBy() {
         return by;
+    }
+
+    public String getDomain() {
+        try {
+            return new URL(url).getHost();
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     public String getUrl() {
@@ -93,5 +105,9 @@ public class Item implements Serializable {
 
     public String getType() {
         return type;
+    }
+
+    public String getScore() {
+        return score != null ? score.toString() : null;
     }
 }

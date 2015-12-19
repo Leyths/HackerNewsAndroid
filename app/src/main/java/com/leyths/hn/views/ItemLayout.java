@@ -18,7 +18,8 @@ import butterknife.OnClick;
 public class ItemLayout extends LinearLayout {
 
     @InjectView(R.id.title) protected TextView title;
-    @InjectView(R.id.submitter) protected TextView submitter;
+    @InjectView(R.id.domain) protected TextView domain;
+    @InjectView(R.id.points) protected TextView points;
     @InjectView(R.id.comments) protected TextView comments;
 
     private Item item;
@@ -47,8 +48,16 @@ public class ItemLayout extends LinearLayout {
     public void setItem(Item item) {
         this.item = item;
         title.setText(item.getTitle());
-        submitter.setText(item.getBy());
+
+
+        String domainStr = item.getDomain();
+        if(domainStr != null) {
+            domainStr = domainStr.replaceAll("www.", "");
+            domainStr = getResources().getString(R.string.domain, domainStr);
+        }
+        domain.setText(domainStr);
         comments.setText(String.valueOf(item.getDescendants()));
+        points.setText(item.getScore());
 
         setOnClickListener(v -> EventBus.post(new MainActivity.GoToContentEvent(item.getUrl())));
     }
